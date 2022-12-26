@@ -10,7 +10,7 @@ import { options } from "./constants";
 
 function App() {
   const [isNewsLoading, setIsNewsLoading] = useState(false);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(null);
   const [selectedOption, setSelectedOption] = useState({});
   const dispatch = useDispatch();
 
@@ -24,6 +24,7 @@ function App() {
         max: 6,
         sortby: "publishedAt",
       };
+      console.log(query);
 
       params.q = query ? query : "business";
       params.lang = selectedOption ?? "ml";
@@ -70,10 +71,11 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    query && getNews(setNews);
+    (query || query == "") && getNews(setNews);
   };
 
   const handleChange = (searchQuery) => {
+    console.log(searchQuery, "se");
     setQuery(searchQuery);
   };
 

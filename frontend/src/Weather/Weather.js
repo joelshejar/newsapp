@@ -28,7 +28,6 @@ const Weather = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         let { latitude, longitude } = position.coords;
-        // let { longitude } = position.coords;
         setLocation({ latitude, longitude });
         latitude && longitude && getWeatherApi(latitude, longitude);
       });
