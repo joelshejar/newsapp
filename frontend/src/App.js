@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 import InfiniteScroll from "./Reusables/InfiniteScroll";
 import "./styles/App.scss";
@@ -11,7 +12,7 @@ import { options } from "./constants";
 function App() {
   const [isNewsLoading, setIsNewsLoading] = useState(false);
   const [query, setQuery] = useState(null);
-  const [selectedOption, setSelectedOption] = useState({});
+  const [selectedOption, setSelectedOption] = useState(null);
   const dispatch = useDispatch();
 
   const newsList = useSelector((state) => state.news?.newsList ?? []);
@@ -24,10 +25,9 @@ function App() {
         max: 6,
         sortby: "publishedAt",
       };
-      console.log(query);
 
-      params.q = query ? query : "business";
-      params.lang = selectedOption ?? "ml";
+      params.q = query ?? "business";
+      params.lang = selectedOption ?? "en";
 
       const url = process.env.REACT_APP_API_URL;
       const res = await axios.get(url, { params });
@@ -44,7 +44,7 @@ function App() {
   const newsWrapper = () => {
     return newsList.map((elm) => {
       return (
-        <article className="news__wrapper--card">
+        <article className="news__wrapper--card" key={uuidv4()}>
           <div>
             <div className="news__wrapper--heading">{elm.title}</div>
             <img
@@ -61,7 +61,11 @@ function App() {
 
   const languageOptions = () => {
     return options.map((elm) => {
-      return <option value={elm.value}>{elm.label}</option>;
+      return (
+        <option value={elm.value} key={uuidv4()}>
+          {elm.label}
+        </option>
+      );
     });
   };
 
@@ -75,7 +79,6 @@ function App() {
   };
 
   const handleChange = (searchQuery) => {
-    console.log(searchQuery, "se");
     setQuery(searchQuery);
   };
 

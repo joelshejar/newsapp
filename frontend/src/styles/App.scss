@@ -6,6 +6,8 @@
   &__wrapper {
     min-height: 100px;
     min-width: 100px;
+    padding: 0 10px;
+    margin-bottom: 1px solid black;
     &--heading {
       font-size: 32px;
       font-weight: 500;
@@ -59,6 +61,7 @@
 }
 @container (min-width:1000px) {
   .news__wrapper {
+    padding: 0;
     display: grid;
     grid-template-columns: 28% 38% 28%;
     column-gap: 2%;
