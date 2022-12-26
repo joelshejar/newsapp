@@ -6,12 +6,7 @@ import InfiniteScroll from "./Reusables/InfiniteScroll";
 import "./styles/App.scss";
 import { setNewsList, setNews } from "./Actions/newsAction";
 import Weather from "./Weather/Weather";
-
-const options = [
-  { value: "hi", label: "Hindi" },
-  { value: "ml", label: "Malayalam" },
-  { value: "te", label: "Telugu" },
-];
+import { options } from "./constants";
 
 function App() {
   const [isNewsLoading, setIsNewsLoading] = useState(false);
@@ -63,6 +58,12 @@ function App() {
     });
   };
 
+  const languageOptions = () => {
+    return options.map((elm) => {
+      return <option value={elm.value}>{elm.label}</option>;
+    });
+  };
+
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value);
   };
@@ -107,12 +108,7 @@ function App() {
           <label>
             Choose your language:
             <select value={selectedOption} onChange={handleSelectChange}>
-              <option value="en">English</option>
-              <option value="ml">Malayalam</option>
-              <option value="hi">Hindi</option>
-              <option value="te">Telugu</option>
-              <option value="ja">Japanese</option>
-              <option value="es">Spanish</option>
+              {languageOptions()}
             </select>
           </label>
         </div>
@@ -120,7 +116,9 @@ function App() {
 
       <div className="news">
         <div className="news__wrapper">
-          {newsList?.length > 0 ? newsWrapper() : <div>No Results found</div>}
+          {newsList?.length > 0
+            ? newsWrapper()
+            : !isNewsLoading && <div>No Results found</div>}
         </div>
         <InfiniteScroll handlerFunc={() => getNews(setNewsList)} />
         {isNewsLoading && <span className="loading">Loading...</span>}
